@@ -89,4 +89,9 @@ class DingApi
     {
         return new $this->modules[$name]($this->agent);
     }
+
+    static public function ifWorkWell($res)
+    {
+        return $res['errcode'] == 0;
+    }
 }

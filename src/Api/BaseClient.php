@@ -13,6 +13,7 @@ namespace Smartymoon\DingTalk\Api;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Smartymoon\DingTalk\Log\DingLog;
 
 class BaseClient
 {
@@ -61,12 +62,16 @@ class BaseClient
     private function checkFail($response, $uri, $data)
     {
         // todo 处理 access_token 异常问题
-        if ($response['errcode'] === '0') {
+        if (!app()->environment('production') || config('ding.debug')) {
+            DingLog::recordApi($uri, $data, $response);
+        }
+
+        if ($response['errcode'] == '0') {
             AccessToken::refresh($this->agent, $this->access_token);
         } else {
-            $errmsg = $response['errmsg'];
-            Log::info('钉钉 API 返回错误:'. $errmsg, compact('uri', 'data'));
+            DingLog::recordApiFail($uri, $data, $response);
         }
+
         return $response;
     }
 }

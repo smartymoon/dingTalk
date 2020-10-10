@@ -41,7 +41,6 @@ class Client extends BaseClient
      */
     public function sendCorporationMessage($params)
     {
-        dd($this->client);
         return $this->post('topapi/message/corpconversation/asyncsend_v2', $params);
     }
 
