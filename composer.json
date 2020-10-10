@@ -1,0 +1,13 @@
+{
+    "name": "smartymoon/dingtalk",
+    "description": "钉钉SDK For Laravel, inspired by EasyDingTalk",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lee",
+            "email": "pp787qq@gmail.com"
+        }
+    ],
+    "require": {}
+}
