@@ -87,7 +87,7 @@ class BaseClient
     private function checkFail($response, $uri, $data)
     {
         if (!app()->environment('production') || config('ding.debug')) {
-            DingLog::recordApi($uri, $data, $response);
+            DingLog::recordApi($uri, $data + ['access_token' => $this->access_token], $response);
         }
 
         if ($response['errcode'] == 0) {
