@@ -14,11 +14,13 @@ namespace Smartymoon\DingTalk\Api;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Smartymoon\DingTalk\Log\DingLog;
+use Smartymoon\Exceptions\DingApiException;
 
 class BaseClient
 {
     private string $agent;
     private string $base_uri = 'https://oapi.dingtalk.com/';
+    private int $fail_times = 0;
     /**
      * @var mixed
      */
@@ -41,7 +43,19 @@ class BaseClient
                 $this->base_uri . $uri . '?access_token='. $this->access_token,
                 $data
             )->json();
-        return $this->checkFail($response, $uri, $data);
+        $result =  $this->checkFail($response, $uri, $data);
+
+        if ($result === false) {
+            throw new DingApiException();
+        }
+
+        if ($result === true) {
+            return $response;
+        }
+
+        if ($result === 'try_again') {
+            return $this->post($uri, $data);
+        }
     }
 
     /**
@@ -56,22 +70,39 @@ class BaseClient
             ->get($this->base_uri . $uri, [
                 'access_token' => $this->access_token
             ] + $query)->json();
-        return $this->checkFail($response, $uri, $query);
+        $result =  $this->checkFail($response, $uri, $query);
+        if ($result === false) {
+            throw new DingApiException();
+        }
+
+        if ($result === true) {
+            return $response;
+        }
+
+        if ($result === 'try_again') {
+            return $this->getData($uri, $query);
+        }
     }
 
     private function checkFail($response, $uri, $data)
     {
-        // todo 处理 access_token 异常问题
         if (!app()->environment('production') || config('ding.debug')) {
             DingLog::recordApi($uri, $data, $response);
         }
 
-        if ($response['errcode'] == '0') {
+        if ($response['errcode'] == 0) {
             AccessToken::refresh($this->agent, $this->access_token);
+            return true;
+        } elseif ($response['errcode'] == 88){
+            $this->fail_times++;
+            if ($this->fail_times > 2) {
+                return false;
+            }
+            $this->access_token = AccessToken::setNewToken($this->agent);
+            return 'try_again';
         } else {
             DingLog::recordApiFail($uri, $data, $response);
+            return false;
         }
-
-        return $response;
     }
 }

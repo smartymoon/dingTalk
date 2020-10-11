@@ -47,4 +47,13 @@ class AccessToken
     {
         Cache::put('ding_access_token_'.$agent, $token, 6200);
     }
+
+    public static function setNewToken(string $agent): string
+    {
+        $token = Http::get('https://oapi.dingtalk.com/gettoken', [
+                'appkey' => config("ding.agents.${agent}.app_key"),
+                'appsecret' => config("ding.agents.${agent}.app_secret")
+            ])->json('access_token');
+        return Cache::put('ding_access_token_'.$agent, $token, 6200);
+    }
 }
