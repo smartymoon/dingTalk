@@ -9,5 +9,17 @@
             "email": "pp787qq@gmail.com"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Smartymoon\\DingTalk\\": "src"
+        }
+    },
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Smartymoon\\DingTalk\\DingTalkServiceProvider"
+            ]
+        }
+    }
 }
