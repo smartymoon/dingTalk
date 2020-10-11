@@ -9,5 +9,12 @@
             "email": "pp787qq@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Smartymoon\\DingTalk\\DingTalkServiceProvider"
+            ]
+        }
+    }
 }
