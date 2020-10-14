@@ -101,7 +101,7 @@ class BaseClient
             return 'try_again';
         } elseif (isset($response['errcode'])) {
             DingLog::recordApiFail($uri, $data, $response);
-            throw new DingApiException($response);
+            throw new DingApiException($response['errmsg'] ,$response['errcode']);
         } else {
             throw new HttpException();
         }
