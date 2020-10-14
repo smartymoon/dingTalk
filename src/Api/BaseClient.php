@@ -14,7 +14,9 @@ namespace Smartymoon\DingTalk\Api;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Smartymoon\DingTalk\Log\DingLog;
+use Smartymoon\Exceptions\AccessTokenException;
 use Smartymoon\Exceptions\DingApiException;
+use Smartymoon\Exceptions\HttpException;
 
 class BaseClient
 {
@@ -71,9 +73,6 @@ class BaseClient
                 'access_token' => $this->access_token
             ] + $query)->json();
         $result =  $this->checkFail($response, $uri, $query);
-        if ($result === false) {
-            throw new DingApiException();
-        }
 
         if ($result === true) {
             return $response;
@@ -96,13 +95,15 @@ class BaseClient
         } elseif ($response['errcode'] == 88){
             $this->fail_times++;
             if ($this->fail_times > 2) {
-                return false;
+                throw new AccessTokenException('access_token 异常: '. $this->access_token);
             }
             $this->access_token = AccessToken::setNewToken($this->agent);
             return 'try_again';
-        } else {
+        } elseif (isset($response['errcode'])) {
             DingLog::recordApiFail($uri, $data, $response);
-            return false;
+            throw new DingApiException($response);
+        } else {
+            throw new HttpException();
         }
     }
 }
