@@ -2,8 +2,7 @@
 namespace Smartymoon\DingTalk\Exceptions;
 
 
-class DingApiException extends \Exception
+class HttpException extends \Exception
 {
-
 
 }
