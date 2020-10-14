@@ -14,9 +14,9 @@ namespace Smartymoon\DingTalk\Api;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Smartymoon\DingTalk\Log\DingLog;
-use Smartymoon\Exceptions\AccessTokenException;
-use Smartymoon\Exceptions\DingApiException;
-use Smartymoon\Exceptions\HttpException;
+use Smartymoon\DingTalk\Exceptions\AccessTokenException;
+use Smartymoon\DingTalk\Exceptions\DingApiException;
+use Smartymoon\DingTalk\Exceptions\HttpException;
 
 class BaseClient
 {
