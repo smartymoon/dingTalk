@@ -30,7 +30,7 @@ class AccessToken
      */
     public static function get(string $agent)
     {
-        return Cache::remember('ding_access_token_'.$agent, 6200, function() use ($agent) {
+        return Cache::remember(config('app.env').'ding_access_token_'.$agent, 6200, function() use ($agent) {
             return Http::get('https://oapi.dingtalk.com/gettoken', [
                 'appkey' => config("ding.agents.${agent}.app_key"),
                 'appsecret' => config("ding.agents.${agent}.app_secret")
@@ -45,7 +45,7 @@ class AccessToken
      */
     public static function refresh(string $agent, string $token)
     {
-        Cache::put('ding_access_token_'.$agent, $token, 6200);
+        Cache::put(config('app.env').'ding_access_token_'.$agent, $token, 6200);
     }
 
     public static function setNewToken(string $agent): string
@@ -54,6 +54,6 @@ class AccessToken
                 'appkey' => config("ding.agents.${agent}.app_key"),
                 'appsecret' => config("ding.agents.${agent}.app_secret")
             ])->json('access_token');
-        return Cache::put('ding_access_token_'.$agent, $token, 6200);
+        return Cache::put(config('app.env').'ding_access_token_'.$agent, $token, 6200);
     }
 }
