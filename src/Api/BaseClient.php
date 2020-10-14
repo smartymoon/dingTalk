@@ -90,7 +90,6 @@ class BaseClient
         }
 
         if ($response['errcode'] == 0) {
-            AccessToken::refresh($this->agent, $this->access_token);
             return true;
         } elseif ($response['errcode'] == 88){
             $this->fail_times++;
