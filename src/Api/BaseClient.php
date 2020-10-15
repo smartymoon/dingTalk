@@ -20,7 +20,7 @@ use Smartymoon\DingTalk\Exceptions\HttpException;
 
 class BaseClient
 {
-    private string $agent;
+    protected string $agent;
     private string $base_uri = 'https://oapi.dingtalk.com/';
     private int $fail_times = 0;
     /**

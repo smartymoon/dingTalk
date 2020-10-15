@@ -1,24 +1,11 @@
 <?php
 
-/*
- * This file is part of the mingyoung/dingtalk.
- *
- * (c) 张铭阳 <mingyoungcheung@gmail.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Smartymoon\DingTalk\Api\H5app;
 
 use Smartymoon\DingTalk\Api\BaseClient;
-use Smartymoon\DingTalk\Api\Kernel\Concerns\InteractsWithCache;
-use Smartymoon\DingTalk\Api\Kernel\Exceptions\InvalidCredentialsException;
 
 class Client extends BaseClient
 {
-    use InteractsWithCache;
-
     /**
      * 获取 jsapi_ticket
      *
@@ -26,15 +13,10 @@ class Client extends BaseClient
      */
     public function get()
     {
-        if ($value = $this->getCache()->get($this->cacheFor())) {
-            return $value;
-        }
-        $value = $this->getData('get_jsapi_ticket');
-        if (0 !== $value['errcode']) {
-            throw new InvalidCredentialsException(json_encode($value));
-        }
-        $this->getCache()->set($this->cacheFor(), $value, $value['expires_in']);
-        return $value;
+        // 和 appkey 相关, ticket 可在两小时内复用，所以要缓存, 重新获取后，返回新的
+        return \Cache::remember($this->cacheName(), 7000, function() {
+            return $this->getData('get_jsapi_ticket');
+        });
     }
 
     /**
@@ -61,8 +43,8 @@ class Client extends BaseClient
         $plain = 'jsapi_ticket=' . $this->getTicket() . '&noncestr=' . $nonceStr . '&timestamp=' . $timeStamp . '&url=' . $url;
         $signature = sha1($plain);
         return [
-            'agentId' => $this->app['config']->get('agent_id'),
-            'corpId' => $this->app['config']->get('corp_id'),
+            'agentId' => config("ding.agents." . $this->agent . ".agent_id"),
+            'corpId' => config('ding.corp_id'),
             'timeStamp' => $timeStamp,
             'nonceStr' => $nonceStr,
             'signature' => $signature,
@@ -75,9 +57,9 @@ class Client extends BaseClient
      *
      * @return string
      */
-    protected function cacheFor()
+    private function cacheName()
     {
-        return sprintf('jsapi_ticket.%s', $this->app['config']->get('app_key'));
+        return 'jsapi_ticket_' . $this->agent;
     }
 
     /**
