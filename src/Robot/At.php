@@ -17,6 +17,7 @@ class At
 
     public static function phones($phones)
     {
+        $phones = is_array($phones) ? $phones : [$phones];
         return [
             'at' => [
                 'atMobiles' => $phones
