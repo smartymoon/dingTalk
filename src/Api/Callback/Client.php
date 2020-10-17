@@ -24,8 +24,8 @@ class Client extends BaseClient
      */
     public function register($params)
     {
-        $params['token'] = $this->app['config']->get('token');
-        $params['aes_key'] = $this->app['config']->get('aes_key');
+        $params['token'] = config('ding.token');
+        $params['aes_key'] = config('ding.aes_key');
 
         return $this->post('call_back/register_call_back', $params);
     }
@@ -47,8 +47,8 @@ class Client extends BaseClient
      */
     public function update($params)
     {
-        $params['token'] = $this->app['config']->get('token');
-        $params['aes_key'] = $this->app['config']->get('aes_key');
+        $params['token'] = config('ding.token');
+        $params['aes_key'] = config('ding.aes_key');
 
         return $this->post('call_back/update_call_back', $params);
     }
