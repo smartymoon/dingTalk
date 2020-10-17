@@ -68,8 +68,9 @@ class DingApi
      * @param string $agent_name, ding.php 中配置的应用名
      * @return DingApi
      */
-    public static function agent(string $agent_name)
+    public static function agent(string $agent_name = null)
     {
+        $agent_name = $agent_name ?: config('ding.default');
         if (in_array($agent_name, self::$instances)) {
             return self::$instances[$agent_name];
         } else {
