@@ -1,0 +1,64 @@
+<?php
+namespace Smartymoon\DingTalk\Controllers;
+
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Smartymoon\DingTalk\Helpers\Encryptor;
+
+class DingDingController extends \App\Http\Controllers\Controller
+{
+    private $encryptor;
+
+    public function __construct()
+    {
+       $this->encryptor = new Encryptor(config('ding.corp_id'), config('ding.token'), config('ding.aes_key'));
+    }
+
+    /**
+     * 注册事件发生，钉钉向我们的服务器发送通知，给它个面子，返回个 success
+     * @param Request $request
+     * @return string
+     */
+    public function serve(Request $request)
+    {
+        /**
+         * 业务定义在配置文件中
+         * 处理回调事件，这里是具体业务
+         */
+        $payload = $this->getPayload($request);
+        $eventType = $payload['EventType'];
+        if (isset(config('ding.events')[$eventType])) {
+            (new (config('ding.events')[$eventType]))->handle($payload);
+        }
+
+
+        /*
+        $this->app['logger']->debug('Request received: ', [
+            'method' => $this->app['request']->getMethod(),
+            'uri' => $this->app['request']->getUri(),
+            'content' => $this->app['request']->getContent(),
+        ]);
+        */
+
+        return $this->encryptor->encrypt('success');
+
+    }
+
+    /**
+     * Get request payload.
+     *
+     * @return array
+     */
+    private function getPayload(Request $request)
+    {
+        $result = $this->encryptor->decrypt(
+            $request->input('encrypt'),
+            $request->input('signature'),
+            $request->input('nonce'),
+            $request->input('timestamp')
+        );
+
+        return json_decode($result, true);
+    }
+}

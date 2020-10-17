@@ -26,15 +26,6 @@ return [
     */
     'default' => env('DING_DEFAULT_AGENT', 'beauty'),
 
-    /*
-    |-----------------------------------------------------------
-    | 加解密
-    |-----------------------------------------------------------
-    | 此处的 `token` 和 `aes_key` 用于事件通知的加解密
-    | 如果你用到事件回调功能，需要配置该两项
-    */
-    'token' => 'uhl3CZbtsmf93bFPanmMenhWwoqbSwPc',
-    'aes_key' => 'qZEOmHU2qYYk6n6vqLfi3FAhcp9mGA2kgbfnsXDrGgN',
 
     /*
     |-----------------------------------------------------------
@@ -59,5 +50,42 @@ return [
            'token' => '',
             'secret' => ''
         ]
-    ]
+    ],
+
+    /*
+    |-----------------------------------------------------------
+    | 事件回调
+    |-----------------------------------------------------------
+    | 此处的 `token` 和 `aes_key` 用于事件通知的加解密
+    | 如果你用到事件回调功能，需要配置该两项
+    */
+    'token' => 'uhl3CZbtsmf93bFPanmMenhWwoqbSwPc',
+    'aes_key' => 'qZEOmHU2qYYk6n6vqLfi3FAhcp9mGA2kgbfnsXDrGgN',
+
+    'events' => [
+        // 'user_add_org' => '',
+        // 'user_modify_org' =>'',
+        // 'user_leave_org' =>'',
+        // 'org_admin_add' =>'',
+        // 'org_admin_remove' =>'',
+        // 'org_dept_create' =>'',
+        // 'org_dept_modify' =>'',
+        // 'org_dept_remove' =>'',
+        // 'org_remove' =>'',
+        // 'label_user_change' =>'',
+        // 'label_conf_add' =>'',
+        // 'label_conf_modify' =>'',
+        // 'label_conf_del' =>'',
+        // 'org_change' =>'',
+        // 'chat_add_member' =>'',
+        // 'chat_remove_member' =>'',
+        // 'chat_quit' =>'',
+        // 'chat_update_owner' => '',
+        // 'chat_update_title' => '',
+        // 'chat_disband' => '',
+        // 'chat_disband_microap' => '',
+        // 'check_in' => '',
+        // 'bpms_task_change' => '',
+        // 'bpms_instance_change' => ''
+    ],
 ];
