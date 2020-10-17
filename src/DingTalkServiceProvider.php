@@ -28,7 +28,9 @@ class DingTalkServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->commands([
 
+        ]);
     }
 
     /**
