@@ -26,6 +26,7 @@ class Client extends BaseClient
      */
     public function getTicket()
     {
+        \Log::info('ticket is: '. $this->get()['ticket']);
         return $this->get()['ticket'];
     }
 

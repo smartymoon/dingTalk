@@ -30,6 +30,7 @@ class AccessToken
      */
     public static function get(string $agent)
     {
+        \Log::info('token agent : ' . $agent);
         return Cache::remember(config('app.env').'ding_access_token_'.$agent, 6200, function() use ($agent) {
             return Http::get('https://oapi.dingtalk.com/gettoken', [
                 'appkey' => config("ding.agents.${agent}.app_key"),
