@@ -29,7 +29,9 @@ class DingDingController extends \App\Http\Controllers\Controller
         $payload = $this->getPayload($request);
         $eventType = $payload['EventType'];
         if (isset(config('ding.events')[$eventType])) {
-            (new (config('ding.events')[$eventType]))->handle($payload);
+            $events = config('ding.events');
+            $app = new $events[$eventType];
+            $app->handle($payload);
         }
 
 

@@ -22,10 +22,12 @@ class Client extends BaseClient
      *
      * @return mixed
      */
-    public function register($params)
+    public function register()
     {
         $params['token'] = config('ding.token');
         $params['aes_key'] = config('ding.aes_key');
+        $params['url'] = config('app.url').'dingding/event/callback';
+        $params['call_back_tag'] = array_keys(config('ding.events'));
 
         return $this->post('call_back/register_call_back', $params);
     }
@@ -45,10 +47,12 @@ class Client extends BaseClient
      *
      * @return mixed
      */
-    public function update($params)
+    public function update()
     {
         $params['token'] = config('ding.token');
         $params['aes_key'] = config('ding.aes_key');
+        $params['url'] = config('app.url').'dingding/event/callback';
+        $params['call_back_tag'] = array_keys(config('ding.events'));
 
         return $this->post('call_back/update_call_back', $params);
     }

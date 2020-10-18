@@ -59,8 +59,8 @@ return [
     | 此处的 `token` 和 `aes_key` 用于事件通知的加解密
     | 如果你用到事件回调功能，需要配置该两项
     */
-    'token' => 'uhl3CZbtsmf93bFPanmMenhWwoqbSwPc',
-    'aes_key' => 'qZEOmHU2qYYk6n6vqLfi3FAhcp9mGA2kgbfnsXDrGgN',
+    'token' => 'uhl3CZbtsmf93bFPanmMenhWwrqbSwPc',
+    'aes_key' => 'qZEOmHU2qYYk6n6vqLfi3FAhcp9bGA2kgbfnsXDrGgN',
 
     'events' => [
         // 'user_add_org' => '',

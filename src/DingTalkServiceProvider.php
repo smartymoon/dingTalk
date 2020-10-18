@@ -7,6 +7,7 @@ namespace Smartymoon\DingTalk;
 
 use Illuminate\Support\ServiceProvider;
 use Smartymoon\DingTalk\Api\ApiApplication;
+use Smartymoon\DingTalk\Commands\EventsCommand;
 
 /**
  * 1. 从 EasyDingTalk 中复制业务逻辑
@@ -29,7 +30,7 @@ class DingTalkServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-
+            EventsCommand::class
         ]);
     }
 
@@ -40,6 +41,7 @@ class DingTalkServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__.'/../routes.php');
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__.'/../config' => config_path()], 'ding-talk');
             // todo 在 users 表中加入 ding_userid 字段
