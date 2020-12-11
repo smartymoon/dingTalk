@@ -19,7 +19,7 @@ class DingDingController extends \App\Http\Controllers\Controller
     // 一组 api 鉴权参数，用于帮前端调用高级的 api
     public function jsapiSignature(Request $request)
     {
-        $params = DingApi::agent($request->input('agent'))
+        $params = DingApi::agent()
             ->h5app->getSignature($request->input('url'));
         return $params;
     }
