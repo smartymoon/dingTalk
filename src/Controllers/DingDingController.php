@@ -20,7 +20,7 @@ class DingDingController extends \App\Http\Controllers\Controller
     public function jsapiSignature(Request $request)
     {
         $params = DingApi::agent()
-            ->h5app->getSignature($request->input('url'));
+            ->h5app->getSignature($request->headers->get('referer'));
         return $params;
     }
 
