@@ -31,7 +31,7 @@ class Robot
      */
     private function sent($message)
     {
-        dump($message);
+        // dump($message);
         $url = 'https://oapi.dingtalk.com/robot/send?access_token='.$this->token;
 
         if ($this->secret) {
@@ -43,7 +43,7 @@ class Robot
         }
 
         $resopnse = Http::post($url, $message);
-        dump($resopnse->json());
+        // dump($resopnse->json());
         return $resopnse;
     }
 
