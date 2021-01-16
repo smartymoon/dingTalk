@@ -18,6 +18,11 @@ class DingDingChannel
             return;
         }
         $message->toUser($notifiable->dingding_user_id);
-        $message->getApp()->conversation->sendCorporationMessage($message->getArgument());
+
+        if (app()->environment('production')) {
+            $message->getApp()->conversation->sendCorporationMessage($message->getArgument());
+        } else {
+            dump($message->getArgument());
+        }
     }
 }
