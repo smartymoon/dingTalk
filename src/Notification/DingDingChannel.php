@@ -22,6 +22,7 @@ class DingDingChannel
         if (app()->environment('production')) {
             $message->getApp()->conversation->sendCorporationMessage($message->getArgument());
         } else {
+            dump('钉钉通知');
             dump($message->getArgument());
         }
     }
